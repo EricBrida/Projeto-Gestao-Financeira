@@ -15,3 +15,6 @@ def get_db():
         yield db
     finally:
         db.close()
+
+# Atalho para chamada de Banco
+db_dependency = Annotated[Session, Depends(get_db)]
