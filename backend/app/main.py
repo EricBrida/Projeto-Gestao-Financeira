@@ -1,20 +1,15 @@
-from fastapi import FastAPI, HTTPException, Depends
-from pydantic import BaseModel, EmailStr
-from typing import List, Annotated
+from fastapi import FastAPI, Depends
 from app import models
-from app.database import engine, SessionLocal
-from sqlalchemy.orm import Session
+from app.database import engine, Base, SessionLocal
+from app.routes import auth
 
-app = FastAPI()
-models.Base.metadata.create_all(bind=engine)
+app = FastAPI(
+    title="Projeto Gestão Financeira API"
+)
+Base.metadata.create_all(bind=engine)
 
-def get_db():
-    db = SessionLocal()
+app.include_router(auth.router)
 
-    try:
-        yield db
-    finally:
-        db.close()
-
-# Atalho para chamada de Banco
-db_dependency = Annotated[Session, Depends(get_db)]
+@app.get("/")
+def root():
+    return {"message": "API Ok!!"}
