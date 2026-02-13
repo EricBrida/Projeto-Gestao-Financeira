@@ -15,6 +15,6 @@ class Transactions(Base):
     value = Column(Float, nullable=False)
     category = Column(String)
     type = Column(Enum(TransactionType), nullable=False)
-    user_id = Column(Integer, ForeignKey("users.id"))
+    user_id = Column(Integer, ForeignKey("users.user_id"))
 
     user = relationship("User", back_populates="transactions")
